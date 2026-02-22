@@ -17,11 +17,24 @@ class SalesReportController extends Controller
             ->get();
 
         $totalSales = $sales->sum('total_amount');
+        $totalCogs = $sales->sum(function (Sale $sale) {
+            return $sale->items->sum('cost_total');
+        });
+        $grossProfit = $totalSales - $totalCogs;
+        $grossMarginPercent = $totalSales > 0 ? round(($grossProfit / $totalSales) * 100, 2) : 0;
 
         $byPayment = $sales->groupBy('payment_mode')->map(function ($group) {
             return $group->sum('total_amount');
         });
 
-        return view('reports.sales_daily', compact('date', 'sales', 'totalSales', 'byPayment'));
+        return view('reports.sales_daily', compact(
+            'date',
+            'sales',
+            'totalSales',
+            'totalCogs',
+            'grossProfit',
+            'grossMarginPercent',
+            'byPayment'
+        ));
     }
 }

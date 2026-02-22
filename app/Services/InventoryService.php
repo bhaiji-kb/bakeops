@@ -11,12 +11,16 @@ class InventoryService
     public function addStock(
         Product $product,
         float $quantity,
-        string $notes = null
+        string $notes = null,
+        string $referenceType = null,
+        int $referenceId = null
     ): InventoryTransaction {
         return InventoryTransaction::create([
             'product_id' => $product->id,
             'quantity' => $quantity,
             'transaction_type' => 'IN',
+            'reference_type' => $referenceType,
+            'reference_id' => $referenceId,
             'notes' => $notes,
         ]);
     }

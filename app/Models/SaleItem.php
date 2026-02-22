@@ -11,7 +11,17 @@ class SaleItem extends Model
         'product_id',
         'quantity',
         'price',
+        'unit_cost',
         'total',
+        'cost_total',
+    ];
+
+    protected $casts = [
+        'quantity' => 'decimal:2',
+        'price' => 'decimal:2',
+        'unit_cost' => 'decimal:4',
+        'total' => 'decimal:2',
+        'cost_total' => 'decimal:2',
     ];
 
     public function product()
